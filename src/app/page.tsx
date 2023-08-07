@@ -1,113 +1,120 @@
-import Image from 'next/image'
-
+'use client'
+import { useState } from 'react'
 export default function Home() {
+
+ const [data, setdata]= useState({
+  name : "",
+  email : "",
+  phone_number : 0,
+  age : 0,
+ })
+
+ const [getJson,setJsonData]= useState<any[]>([])
+
+  const inputHandler=(e:any)=>{
+    const {name,value}=e.target;
+      setdata((prevState)=>({
+        ...prevState,[name]:value
+      }))
+  }
+
+  const GetData=async()=>{
+
+    try{
+      const {name,email,phone_number,age}=data;
+
+      const submitdata= await fetch('http://127.0.0.1:3002/api/v1/users',{
+        method:"GET",
+        headers:{"Content-Type":"application/json"},
+        credentials: "include",
+      });
+      
+      const response= await submitdata.json();
+
+      if(submitdata.ok){
+        setJsonData(response.userData)
+      }
+
+    }
+    catch(err){
+      window.alert(err);
+    }
+
+  }
+
+  const Onclick=async()=>{
+
+    try{
+      const {name,email,phone_number,age}=data;
+
+      const submitdata= await fetch('http://127.0.0.1:3002/api/v1/registration',{
+        method:"POST",
+        body:JSON.stringify({
+          name,
+          email,
+          phone_number,
+          age
+        }),
+        headers:{"Content-Type":"application/json"}, 
+        credentials: "include",
+      });
+      
+      const response= await submitdata.json();
+
+      if(submitdata.ok){
+        await GetData();
+        console.log(response);
+      }
+
+    }
+    catch(err){
+      window.alert(err);
+    }
+
+  }
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+      <form method='POST' className='flex flex-col justify-center items-start gap-1'>
+        <label>Name</label>
+        <input name="name" value={data.name} type="text" onChange={inputHandler} className='text-black'/>
+        <label className='mt-2'>Email</label>
+        <input name="email" value={data.email} type="text" onChange={inputHandler} className='text-black'/>
+        <label className='mt-2'>Phone Number:</label>
+        <input name="phone_number" value={data.phone_number} type="text" onChange={inputHandler} className='text-black'/>
+        <label className='mt-2'>Age:</label>
+        <input name="age" value={data.age} type="text" onChange={inputHandler} className='text-black'/>
+        <input type="submit" className='w-full bg-black dark:bg-white text-white dark:text-black rounded-[12px] mt-4' onClick={Onclick} />
+      </form>
+    <br />
+      <table>
+      <thead>
+        <tr>
+          <th className='border-[1px] border-white'> Name </th>
+          <th className='border-[1px] border-white'> Email</th>
+          <th className='border-[1px] border-white'> Phone Number</th>
+          <th className='border-[1px] border-white'> Age</th>
+        </tr>
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+      </thead>
+      <tbody>
+        { getJson && Array.isArray(getJson) ?
 
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+        getJson.map((user,index)=>(
+          <tr key={index}>
+            <td className='border-[1px] border-black p-2 bg-white text-black'>{user.name}</td>
+            <td className='border-[1px] border-white p-2'>{user.email}</td>
+            <td className='border-[1px] border-white p-2'>{user.phone_number}</td>
+            <td className='border-[1px] border-white p-2'>{user.age}</td>
+          </tr>
+        )):
+          <p>no data!!!</p>
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
+        }
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore the Next.js 13 playground.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
+      </tbody>
+      </table>
+      <a href="http://127.0.0.1:3002/" download className='bg-white p-2 text-black rounded-full hover:scale-95 transform transition ease-in-out delay-150 duration-300'> Download The Sheet</a>
     </main>
   )
 }
