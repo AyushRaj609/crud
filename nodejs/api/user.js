@@ -6,7 +6,6 @@ const exceljs = require('exceljs');
 const UserData = require('../models/usermodel');
 require('../dbconnection/connection')
 
-
 route.post('/api/v1/registration', async (req, res) => {
     try {
         const { name, email, phone_number, age } = req.body;
