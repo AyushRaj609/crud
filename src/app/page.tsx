@@ -74,26 +74,26 @@ export default function Home() {
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <form method='POST' className='flex flex-col justify-center items-start gap-1'>
-        <label>Name</label>
-        <input name="name" value={data.name} type="text" onChange={inputHandler} className='text-black'/>
+    <main className="flex min-h-screen flex-col items-center justify-between p-16 bg-white">
+      <form method='POST' className='text-black flex flex-col border-[2px] border-black bg-green-500 p-4 rounded-lg justify-center items-start gap-1'>
+        <label>Name </label>
+        <input name="name" value={data.name} type="text" onChange={inputHandler} className='p-[2px] border-[2px] border-black rounded-xl focus:ring-1 focus:ring-red-600 bg-white'/>
         <label className='mt-2'>Email</label>
-        <input name="email" value={data.email} type="text" onChange={inputHandler} className='text-black'/>
+        <input name="email" value={data.email} type="text" onChange={inputHandler} className='p-[2px] border-[2px] border-black rounded-xl focus:ring-1 focus:ring-red-600 bg-white'/>
         <label className='mt-2'>Phone Number:</label>
-        <input name="phone_number" value={data.phone_number} type="text" onChange={inputHandler} className='text-black'/>
+        <input name="phone_number" value={data.phone_number} type="text" onChange={inputHandler} className='p-[2px] border-[2px] border-black rounded-xl focus:ring-1 focus:ring-red-600 bg-white'/>
         <label className='mt-2'>Age:</label>
-        <input name="age" value={data.age} type="text" onChange={inputHandler} className='text-black'/>
-        <input type="submit" className='w-full bg-black dark:bg-white text-white dark:text-black rounded-[12px] mt-4' onClick={Onclick} />
+        <input name="age" value={data.age} type="text" onChange={inputHandler} className='p-[2px] border-[2px] border-black rounded-xl focus:ring-1 focus:ring-red-600 bg-white'/>
+        <input type="submit" className='p-[2px] border-[2px] hover:bg-black hover:text-white transform transition ease-in-out delay-[100] hover:scale-90 w-full bg-black dark:bg-white text-white dark:text-black rounded-[12px] mt-4' onClick={Onclick} />
       </form>
     <br />
       <table>
       <thead>
         <tr>
-          <th className='border-[1px] border-white'> Name </th>
-          <th className='border-[1px] border-white'> Email</th>
-          <th className='border-[1px] border-white'> Phone Number</th>
-          <th className='border-[1px] border-white'> Age</th>
+          <th className='p-[6px] border-black bg-black text-white rounded-tl-xl'> Name </th>
+          <th className='p-[2px] border-black bg-black text-white'> Email</th>
+          <th className='p-[2px] border-black bg-black text-white'> Phone Number</th>
+          <th className='p-[6px] border-black bg-black text-white rounded-tr-xl'> Age</th>
         </tr>
 
       </thead>
@@ -102,10 +102,10 @@ export default function Home() {
 
         getJson.map((user,index)=>(
           <tr key={index}>
-            <td className='border-[1px] border-black p-2 bg-white text-black'>{user.name}</td>
-            <td className='border-[1px] border-white p-2'>{user.email}</td>
-            <td className='border-[1px] border-white p-2'>{user.phone_number}</td>
-            <td className='border-[1px] border-white p-2'>{user.age}</td>
+            <td className='border-[1px] border-black p-2 bg-blue-100 text-black'>{user.name}</td>
+            <td className='border-[1px] border-black p-2 bg-blue-100 text-black'>{user.email}</td>
+            <td className='border-[1px] border-black p-2 bg-blue-100 text-black'>{user.phone_number}</td>
+            <td className='border-[1px] border-black p-2 bg-blue-100 text-black'>{user.age}</td>
           </tr>
         )):
           <p>no data!!!</p>
@@ -114,7 +114,7 @@ export default function Home() {
 
       </tbody>
       </table>
-      <a href="http://127.0.0.1:3002/" download className='bg-white p-2 text-black rounded-full hover:scale-95 transform transition ease-in-out delay-150 duration-300'> Download The Sheet</a>
+      <a href="http://127.0.0.1:3002/" download className='border-[2px] hover:bg-black hover:text-white dark:bg-white dark:text-black mt-4 bg-white p-2 text-black rounded-full hover:scale-95 transform transition ease-in-out delay-150 duration-300'> Download The Sheet</a>
     </main>
   )
 }
